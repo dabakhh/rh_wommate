@@ -1,6 +1,5 @@
 <?php
 
-
 $serveur     = "localhost";
 $base        = "rh_wommate";
 $utilisateur = "root";
@@ -49,7 +48,7 @@ try {
             <td><?php echo $coach['date_prise_fonction']; ?></td>
             <td><?php echo $coach['domaine']; ?></td>
             <td><?php echo $coach['adresse']; ?></td>
-            <!-- ... rattaché ... -->
+            <!-- ... rattachés ... -->
         
             <td>
             <a href="modifier.php?id=<?php echo $coach['id']; ?>">Modifier</a>
