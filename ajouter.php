@@ -19,7 +19,7 @@ if (isset($_POST['prenom']) && isset($_POST['nom'])
     $domaine = $_POST['domaine'];
 
    
-    // CONNEXION PDU à REFACTORISER 
+    // CONNEXION PDO à REFACTORISER 
     $serveur     = "localhost";
     $base        = "rh_wommate";
     $utilisateur = "root";
@@ -40,9 +40,9 @@ if (isset($_POST['prenom']) && isset($_POST['nom'])
             echo "Erreur de connexion : " . $e->getMessage();
             }
             
-            // INSERTION sécurisée
-            $sql = "INSERT INTO coachs (prenom, nom, date_prise_fonction, domaine)
-            VALUES (:prenom, :nom, :datepf, :domaine)";
+    // INSERTION sécurisée
+    $sql = "INSERT INTO coachs (prenom, nom, date_prise_fonction, domaine)
+    VALUES (:prenom, :nom, :datepf, :domaine)";
     
     $stmt = $connexion->prepare($sql);
     $stmt->bindParam(':prenom', $prenom);
@@ -50,7 +50,6 @@ if (isset($_POST['prenom']) && isset($_POST['nom'])
     $stmt->bindParam(':datepf', $datepf);
     $stmt->bindParam(':domaine', $domaine);
     $stmt->execute();
-
 
     // message de retour et erreurs
     try{
