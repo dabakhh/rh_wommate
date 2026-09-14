@@ -8,7 +8,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
   exit;
   }
   
-  $id = $_GET['id'];
+$id = $_GET['id'];
   
 // CONNEXION PDO à REFACTORISER 
 
