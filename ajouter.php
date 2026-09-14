@@ -18,27 +18,8 @@ if (isset($_POST['prenom']) && isset($_POST['nom'])
     $datepf = $_POST['date_prise_fonction'];
     $domaine = $_POST['domaine'];
 
-   
-    // CONNEXION PDO à REFACTORISER 
-    $serveur     = "localhost";
-    $base        = "rh_wommate";
-    $utilisateur = "root";
-    $motDePasse  = "";
-
-    try {
-       
-    $connexion = new PDO(
-        "mysql:host=$serveur;dbname=$base;charset=utf8" ,
-        $utilisateur, $motDePasse
-    );
-
-    
-    $connexion->setAttribute(
-        PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION
-        );
-        } catch (PDOException $e) {
-            echo "Erreur de connexion : " . $e->getMessage();
-            }
+    // Inclure le bloc de connexion
+    require_once 'connexion.php';
             
     // INSERTION sécurisée
     $sql = "INSERT INTO coachs (prenom, nom, date_prise_fonction, domaine)

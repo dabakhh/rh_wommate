@@ -9,30 +9,14 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
   }
   
 $id = $_GET['id'];
+
+// Inclure le bloc de connexion
+require_once 'connexion.php';
+
+$data = $connexion->query("SELECT * FROM coachs");
   
-// CONNEXION PDO à REFACTORISER 
+$coachs = $data->fetchAll(PDO::FETCH_ASSOC);
 
-$serveur     = "localhost";
-$base        = "rh_wommate";
-$utilisateur = "root";
-$motDePasse  = "";
-
-try {
-    $connexion = new PDO(
-    "mysql:host=$serveur;dbname=$base;charset=utf8" ,
-    $utilisateur, $motDePasse
-  );
- 
-  $connexion->setAttribute(
-      PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION
-  );
-
-  $data = $connexion->query("SELECT * FROM coachs");
-  
-  $coachs = $data->fetchAll(PDO::FETCH_ASSOC);
-  } catch (PDOException $e) {
-      echo "Erreur de connexion : " . $e->getMessage();
-      }
       
       // distinguer affichage et enregistrement 
 

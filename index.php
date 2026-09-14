@@ -1,26 +1,11 @@
 <?php
 
-$serveur     = "localhost";
-$base        = "rh_wommate";
-$utilisateur = "root";
-$motDePasse  = "";
+// Inclure le bloc de connexion
+require_once 'connexion.php';
 
-try {
-  $connexion = new PDO(
-    "mysql:host=$serveur;dbname=$base;charset=utf8" ,
-    $utilisateur, $motDePasse
-  );
+$data = $connexion->query("SELECT * FROM coachs");
  
-  $connexion->setAttribute(
-    PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION
-  );
-
-   $data = $connexion->query("SELECT * FROM coachs");
- 
-  $coachs = $data->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-  echo "Erreur de connexion : " . $e->getMessage();
-}
+$coachs = $data->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <?php// =========  AFFICHER LE TABLEAU  =========== ?>
