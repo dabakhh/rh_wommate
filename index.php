@@ -8,7 +8,9 @@ $data = $connexion->query("SELECT * FROM coachs");
 $coachs = $data->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<?php// =========  AFFICHER LE TABLEAU  =========== ?>
+<?php
+// =========  AFFICHER LE TABLEAU  =========== 
+?>
 <table border="1"> 
     <thead>
         <tr>

@@ -7,10 +7,6 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
  
 $id = $_GET['id'];
 
-// Inclure le bloc de connexion
-// ===================== ALERT =====================
-//      Choix de conception à interroger non fait ! Cause : bloc catch du fichier connexion.php
-// =================================================
 require_once 'connexion.php';
 
 // SUPPRESSION sécurisée
