@@ -1,20 +1,18 @@
 <?php
 
-$serveur     = "localhost";
-$base        = "rh_wommate";
-$utilisateur = "root";
-$motDePasse  = "";
+class Connexion{
+    private $serveur     = "localhost";
+    private $base        = "rh_wommate";
+    private $utilisateur = "root";
+    private $motDePasse  = "";
+    public $pdo;
 
-try {
-  $connexion = new PDO(
-    "mysql:host=$serveur;dbname=$base;charset=utf8" ,
-    $utilisateur, $motDePasse
-  );
- 
-  $connexion->setAttribute(
-    PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION
-  );
-
-} catch (PDOException $e) {
-  echo "Erreur de connexion : " . $e->getMessage();
+    public function __construct() {
+        $this->pdo = new PDO(
+            "mysql:host={$this->serveur};dbname={$this->base};charset=utf8",
+            $this->utilisateur, $this->motDePasse
+        );
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
 }
+
