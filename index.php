@@ -13,7 +13,7 @@ $rows = $data->fetchAll(PDO::FETCH_ASSOC);
 $coachs = [];
 foreach ($rows as $row) {
     $coachs[] = new Coach(
-        $row['id'], $row['prenom'], $row['nom'], $row['date_prise_fonction'], $row['domaine'], $row['adresse']
+        $row['prenom'], $row['nom'], $row['date_prise_fonction'], $row['domaine'], $row['id'], $row['adresse']
     );
 }
 
@@ -47,7 +47,6 @@ foreach ($rows as $row) {
                     <th>Nom</th>
                     <th>Date de prise de fonction</th>
                     <th>Domaine</th>
-                    <th>Adresse</th>
                     <th>Actions</th>
                </tr>        
             </thead>
@@ -62,7 +61,6 @@ foreach ($rows as $row) {
                     <td><?php echo $coach->getNom(); ?></td>
                     <td><?php echo $coach->getStartDate(); ?></td>
                     <td><?php echo $coach->getDomain(); ?></td>
-                    <td><?php echo $coach->getAddress(); ?></td>
                     <td>
                     <a href="modifier.php?id=<?php echo $coach->getId(); ?>">Modifier</a>
                     <a href="supprimer.php?id=<?php echo $coach->getId(); ?>">Supprimer</a>

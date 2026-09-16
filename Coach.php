@@ -1,21 +1,20 @@
 <?php
 
 class Coach {
-    private $id;
+    private ?int $id;
     private $prenom;
     private $nom;
     private $datepf;
     private $domaine;
-    private $adresse;
+    // private $adresse;
  
     // ... constructeur ...
-    public function __construct($id, $prenom, $nom, $datepf, $domaine, $adresse) {
-      $this->id  = $id;
+    public function __construct(string $prenom, string $nom, string $datepf, string $domaine, ?int $id = null,) {
+      $this->id      = $id;
       $this->prenom  = $prenom;
       $this->nom     = $nom;
       $this->datepf  = $datepf;
       $this->domaine = $domaine;
-      $this->adresse = $adresse;
     }
 
     // ... getters
@@ -37,9 +36,5 @@ class Coach {
 
     public function getDomain() {
         return $this->domaine;
-    }
-
-    public function getAddress() {
-        return $this->adresse;
     }
 }
