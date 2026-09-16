@@ -11,26 +11,30 @@
 // vérifier que le formulaire a été soumis 
 if (isset($_POST['prenom']) && isset($_POST['nom'])
     && isset($_POST['date_prise_fonction']) && isset($_POST['domaine'])) {
-   
-    // récupérer les valeurs postées
-    $prenom  = $_POST['prenom'];
-    $nom     = $_POST['nom'];
-    $datepf = $_POST['date_prise_fonction'];
-    $domaine = $_POST['domaine'];
 
     // Inclure le bloc de connexion
-    require_once 'connexion.php';
+    require_once 'Connexion.php';
+    require_once 'Coach.php';
+
+    $coach = new Coach(
+        $_POST['prenom'], $_POST['nom'],
+        $_POST['date_prise_fonction'], $_POST['domaine']
+    );      
+
+    $connexion = new Connexion();
+    $pdo = $connexion->pdo;
             
     // INSERTION sécurisée
     $sql = "INSERT INTO coachs (prenom, nom, date_prise_fonction, domaine)
     VALUES (:prenom, :nom, :datepf, :domaine)";
     
-    $stmt = $connexion->prepare($sql);
-    $stmt->bindParam(':prenom', $prenom);
-    $stmt->bindParam(':nom', $nom);
-    $stmt->bindParam(':datepf', $datepf);
-    $stmt->bindParam(':domaine', $domaine);
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':prenom', $coach->getPrenom());
+    $stmt->bindValue(':nom', $coach->getNom());
+    $stmt->bindValue(':datepf', $coach->getStartDate());
+    $stmt->bindValue(':domaine', $coach->getDomain());
     $stmt->execute();
+
 
     // message de retour et erreurs
     try{
