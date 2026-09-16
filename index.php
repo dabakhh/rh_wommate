@@ -1,11 +1,22 @@
 <?php
 
 // Inclure le bloc de connexion
-require_once 'connexion.php';
-
-$data = $connexion->query("SELECT * FROM coachs");
+require_once 'Connexion.php';
+require_once 'Coach.php';
  
-$coachs = $data->fetchAll(PDO::FETCH_ASSOC);
+$connexion = new Connexion();
+$pdo = $connexion->pdo;
+
+$data = $pdo->query("SELECT * FROM coachs");
+$rows = $data->fetchAll(PDO::FETCH_ASSOC);
+
+$coachs = [];
+foreach ($rows as $row) {
+    $coachs[] = new Coach(
+        $row['id'], $row['prenom'], $row['nom'], $row['date_prise_fonction'], $row['domaine'], $row['adresse']
+    );
+}
+
 ?>
 
 <?php
@@ -21,7 +32,6 @@ $coachs = $data->fetchAll(PDO::FETCH_ASSOC);
         <i class="fa-solid fa-plus"></i> Ajouter un coach
     </a>
 </div>
-
 
 <div class="table-responsive">
     <!-- table-responsive = sur mobile le tableau aura un scroll horizontal -->
@@ -47,17 +57,15 @@ $coachs = $data->fetchAll(PDO::FETCH_ASSOC);
             
                 <?php foreach ($coachs as $coach): ?>
                 <tr>
-                    <td><?php echo $coach['id']; ?></td>
-                    <td><?php echo $coach['prenom']; ?></td>
-                    <td><?php echo $coach['nom']; ?></td>
-                    <td><?php echo $coach['date_prise_fonction']; ?></td>
-                    <td><?php echo $coach['domaine']; ?></td>
-                    <td><?php echo $coach['adresse']; ?></td>
-                    <!-- ... rattachés ... -->
-                
+                    <td><?php echo $coach->getId(); ?></td>
+                    <td><?php echo $coach->getPrenom(); ?></td>
+                    <td><?php echo $coach->getNom(); ?></td>
+                    <td><?php echo $coach->getStartDate(); ?></td>
+                    <td><?php echo $coach->getDomain(); ?></td>
+                    <td><?php echo $coach->getAddress(); ?></td>
                     <td>
-                    <a href="modifier.php?id=<?php echo $coach['id']; ?>">Modifier</a>
-                    <a href="supprimer.php?id=<?php echo $coach['id']; ?>">Supprimer</a>
+                    <a href="modifier.php?id=<?php echo $coach->getId(); ?>">Modifier</a>
+                    <a href="supprimer.php?id=<?php echo $coach->getId(); ?>">Supprimer</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
