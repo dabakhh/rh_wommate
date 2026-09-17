@@ -14,8 +14,7 @@ $pdo = $connexion->pdo;
 
 // SUPPRESSION sécurisée
   
-$sql = "DELETE FROM coachs WHERE id = :id";
-$stmt = $pdo->prepare($sql);
+$stmt = $pdo->prepare("DELETE FROM coachs WHERE id = :id");
 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 
