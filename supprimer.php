@@ -7,12 +7,15 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
  
 $id = $_GET['id'];
 
-require_once 'connexion.php';
+require_once 'Connexion.php';
+
+$connexion = new Connexion();
+$pdo = $connexion->pdo;
 
 // SUPPRESSION sécurisée
   
 $sql = "DELETE FROM coachs WHERE id = :id";
-$stmt = $connexion->prepare($sql);
+$stmt = $pdo->prepare($sql);
 $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 
