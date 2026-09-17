@@ -11,9 +11,14 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 $id = $_GET['id'];
 
 // Inclure le bloc de connexion
-require_once 'connexion.php';
+require_once 'Connexion.php';
+require_once 'Coach.php';
 
-$data = $connexion->query("SELECT * FROM coachs");
+$connexion = new Connexion();
+$pdo = $connexion->pdo;
+
+
+$data = $pdo->prepare("SELECT * FROM coachs");
   
 $coachs = $data->fetchAll(PDO::FETCH_ASSOC);
 
@@ -23,25 +28,21 @@ $coachs = $data->fetchAll(PDO::FETCH_ASSOC);
       if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if (isset($_POST['prenom'], $_POST['nom'],
             $_POST['date_prise_fonction'], $_POST['domaine'])) {
-    $prenom  = $_POST['prenom'];
-    $nom     = $_POST['nom'];
-    $datepf = $_POST['date_prise_fonction'];
-    $domaine     = $_POST['domaine'];
-    
-    // la requête UPDATE
-    
-    $sqlUpdate = "UPDATE coachs
-                  SET prenom=:prenom, nom=:nom,
-                      date_prise_fonction=:datepf, domaine=:domaine
-                  WHERE id=:id";
+    $coachModifie = new Coach(
+        $_POST['prenom'], $_POST['nom'], $_POST['date_prise_fonction'], $_POST['domaine']
+    );
  
-    $stmtUpdate = $connexion->prepare($sqlUpdate);
-    $stmtUpdate->bindParam(':prenom', $prenom);
-    $stmtUpdate->bindParam(':nom', $nom);
-    $stmtUpdate->bindParam(':datepf', $datepf);
-    $stmtUpdate->bindParam(':domaine', $domaine);
-    $stmtUpdate->bindParam(':id', $id, PDO::PARAM_INT);
-    $stmtUpdate->execute();
+    $stmt = $pdo->prepare("UPDATE coachs
+    SET prenom=:prenom, nom=:nom, date_prise_fonction=:datepf, domaine=:domaine
+    WHERE id=:id");
+    $stmt->bindValue(':prenom', $coachModifie->getPrenom());
+    $stmt->bindValue(':nom', $coachModifie->getNom());
+    $stmt->bindValue(':datepf', $coachModifie->getStartDate());
+    $stmt->bindValue(':domaine', $coachModifie->getDomain());
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+
+    $stmt->execute();
+
 
 
     // message de retour et erreurs
@@ -62,12 +63,16 @@ $coachs = $data->fetchAll(PDO::FETCH_ASSOC);
 
 // recharger les données à jour
 
-$sql = "SELECT * FROM coachs WHERE id = :id";
-$stmt = $connexion->prepare($sql);
-$stmt->bindParam(':id', $id, PDO::PARAM_INT);
+$stmt = $pdo->prepare("SELECT * FROM coachs WHERE id = :id");
+$stmt->bindValue(':id', $id, PDO::PARAM_INT);
 $stmt->execute();
 
-$coach = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$ligne = $stmt->fetch(PDO::FETCH_ASSOC);
+$coach = new Coach(
+    $ligne['prenom'], $ligne['nom'], $ligne['date_prise_fonction'], $ligne['domaine']
+);
+
 
 //  gérer le coach introuvable  
 
@@ -81,15 +86,15 @@ if (!$coach) {
 <form action="" method="POST">
     <p>Vous pouvez modifier les informations du Coach :</p>
     <input type="text" name="prenom"
-        value="<?php echo htmlspecialchars($coach['prenom']); ?>" >
+        value="<?php echo htmlspecialchars($coach->getPrenom());  ?>" >
         
     <input type="text" name="nom"
-        value="<?php echo htmlspecialchars($coach['nom']); ?>" >
+        value="<?php echo htmlspecialchars($coach->getNom());  ?>" >
 
     <input type="date" name="date_prise_fonction"
-        value="<?php echo htmlspecialchars($coach['date_prise_fonction']); ?>" >
+        value="<?php echo htmlspecialchars($coach->getStartDate());  ?>" >
     <input type="text" name="domaine"
-        value="<?php echo htmlspecialchars($coach['domaine']); ?>" >
+        value="<?php echo htmlspecialchars($coach->getDomain());  ?>" >
 
     <button type="submit">Enregistrer</button>
 </form>
